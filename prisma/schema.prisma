@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String   @unique 
+  password  String   
+  createdAt DateTime @default(now()) 
+  isSeller  Boolean  @default(false)
+  seller    Seller?  @relation("UserSeller") 
+}
+
+model Seller {
+  id               String   @id @default(uuid())
+  shopName         String
+  shopDescription  String
+  shopImage        String 
+  validIdImage     String
+  verified         Boolean  @default(false)
+  userId           Int      @unique 
+  user             User     @relation("UserSeller", fields: [userId], references: [id])
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String   // Store hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

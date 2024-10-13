@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faCartShopping, faUser, faHouse } from '@fortawesome/free-solid-svg-icons';
 
 export default function Nav() {
     const [isInverted, setIsInverted] = useState(false);
@@ -49,19 +49,31 @@ export default function Nav() {
                 )}
 
                 <ul className="flex items-center lg:space-x-2 justify-evenly">
-                    <li className={`px-3 py-2 transition-colors border rounded-full 
-                                    ${isInverted ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white' : 'border-blue-950 text-blue-950 hover:bg-blue-950 hover:text-white'}`}>
-                        <a className="w-full h-full font-medium" href="Seller">Start Selling</a>
+                    <li>
+                        <a className={`w-full h-full px-3 py-2 transition-colors border rounded-full 
+                                        ${isInverted ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white' : 'border-blue-950 text-blue-950 hover:bg-blue-950 hover:text-white'}`}
+                            href="/">
+                            <FontAwesomeIcon icon={faHouse} />
+                        </a>
                     </li>
-                    <li className={`px-3 py-2 transition-colors border rounded-full 
-                                    ${isInverted ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white' : 'border-blue-950 text-blue-950 hover:bg-blue-950 hover:text-white'}`}>
-                        <a className="w-full h-full" href="Cart">
+                    <li>
+                        <a className={`w-full h-full px-3 py-2 font-medium transition-colors border rounded-full 
+                                        ${isInverted ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white' : 'border-blue-950 text-blue-950 hover:bg-blue-950 hover:text-white'}`} 
+                           href="/seller">
+                            Start Selling
+                        </a>
+                    </li>
+                    <li>
+                        <a className={`w-full h-full px-3 py-2 transition-colors border rounded-full 
+                                        ${isInverted ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white' : 'border-blue-950 text-blue-950 hover:bg-blue-950 hover:text-white'}`} 
+                           href="/cart">
                             <FontAwesomeIcon icon={faCartShopping} />
                         </a>
                     </li>
-                    <li className={`px-3 py-2 transition-colors border rounded-full 
-                                    ${isInverted ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white' : 'border-blue-950 text-blue-950 hover:bg-blue-950 hover:text-white'}`}>
-                        <a className="w-full h-full" href="Profile">
+                    <li>
+                        <a className={`w-full h-full px-3 py-2 transition-colors border rounded-full 
+                                        ${isInverted ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white' : 'border-blue-950 text-blue-950 hover:bg-blue-950 hover:text-white'}`} 
+                           href="/profile">
                             <FontAwesomeIcon icon={faUser} />
                         </a>
                     </li>

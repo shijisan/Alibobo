@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation'; // Import useRouter for client-side navigation
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter for client-side navigation
 
-export default function Login() {
-    const [phoneNum, setPhoneNum] = useState("");
+export default function AdminLogin() {
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter(); // Initialize useRouter for navigation
@@ -21,21 +21,21 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission
 
-        const response = await fetch("/api/login", {
+        const response = await fetch("/api/admin/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ phoneNum, password }),
+            body: JSON.stringify({ username, password }), // Send username and password
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            console.log("User logged in.", data);
+            console.log("Admin logged in.", data);
             // Store token in a cookie instead of local storage
             document.cookie = `token=${encodeURIComponent(data.token)}; path=/; SameSite=Lax; Secure`;
-            router.push('/profile'); // Redirect to the profile page
+            router.push('/admin/dashboard'); // Redirect to the admin dashboard page
         } else {
             setErrorMessage(data.error || "Login failed. Please try again.");
         }
@@ -47,21 +47,21 @@ export default function Login() {
                 className="flex flex-col justify-center w-full p-5 bg-white rounded-2xl lg:w-1/3"
                 onSubmit={handleSubmit} // Attach the submit handler
             >
-                <h1 className="my-2 text-3xl text-center">Login</h1>
+                <h1 className="my-2 text-3xl text-center">Admin Login</h1>
 
                 {errorMessage && (
                     <div className="mb-4 text-center text-red-500">{errorMessage}</div>
                 )}
 
                 <div className="flex flex-col input-group">
-                    <label className="my-2" htmlFor="phoneNum">Phone:</label>
+                    <label className="my-2" htmlFor="username">Username:</label>
                     <input
                         className="p-2 border rounded-lg border-blue-950"
-                        type="tel"
-                        name="phoneNum"
-                        id="phoneNum"
-                        value={phoneNum}
-                        onChange={(e) => setPhoneNum(e.target.value)}
+                        type="text"
+                        name="username"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-col input-group">
