@@ -20,6 +20,20 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
+  // Allow access to /admin/login without checks
+  if (pathname === '/admin/login') {
+    return NextResponse.next();
+  }
+
+  // Check for admin paths
+  if (pathname.startsWith('/admin')) {
+    // If the user is not authenticated or role is not ADMIN, redirect to /admin/login
+    if (!token || token.role !== 'ADMIN') {
+      console.log("Redirecting to /admin/login: No token or not ADMIN");
+      return NextResponse.redirect(new URL('/admin/login', req.url));
+    }
+  }
+
   // If the user is not authenticated and is trying to access a protected path, redirect to login
   if (!token && protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))) {
     console.log("Redirecting to login: No token");
@@ -41,5 +55,5 @@ export async function middleware(req) {
 
 // Define which paths this middleware should apply to
 export const config = {
-  matcher: ['/seller/:path*', '/account/:path*', '/register/:path*'], // Match register paths
+  matcher: ['/seller/:path*', '/account/:path*', '/register/:path*', '/admin/:path*'], // Match admin paths
 };

@@ -13,13 +13,26 @@ model User {
   email            String    @unique
   phoneNumber      String
   password         String
-  role             Role      @default(BUYER) // Default role set to BUYER
+  role             Role      @default(BUYER) // Role can be BUYER or SELLER
   profilePicture   String?   // Optional profile picture
   seller           Seller?   // One-to-one relation with seller (optional)
-  admin            Admin?    // One-to-one relation with admin
   images           Image[]   // One-to-many relation with images
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+  admins           Admin[]   // List of admins linked to this user
+}
+
+model Admin {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique // Link to the User
+  user        User     @relation(fields: [userId], references: [id]) // Relation to User
+  email       String   @unique
+  role        Role     @default(ADMIN) // Role set to ADMIN
+  createdById Int?     // ID of the admin who created this admin
+  createdBy   Admin?   @relation("CreatedAdmins", fields: [createdById], references: [id]) // Relation to track the creator
+  createdAdmins Admin[] @relation("CreatedAdmins") // List of admins created by this admin
+  createdAt   DateTime @default(now()) // Default value set to now()
+  updatedAt   DateTime @updatedAt @default(now()) // Fix: Add default value to updatedAt
 }
 
 model Seller {
@@ -32,13 +45,6 @@ model Seller {
   idImage         String  // ID image required for verification
   verified        Boolean @default(false) // To be updated by admin
   products        Product[]
-}
-
-model Admin {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int      @unique
-  role       String   @default("admin")
 }
 
 model Product {
